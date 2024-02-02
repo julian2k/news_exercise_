@@ -68,8 +68,8 @@ def get_news(topic):
 
 
 class AssistantManager:
-    thread_id = "thread_I26JxIevtnUI3vVOMhggtNUE"
-    assistant_id = "asst_94vjFtf7fylX1TAeY88Sg5vT"
+    thread_id = ""
+    assistant_id = "asst_XmFC5ersE7UIofsH0QXGssaz"
 
     def __init__(self, model: str = model):
         self.client = client
@@ -198,9 +198,16 @@ def main():
     # print(news[0])
 
     manager = AssistantManager()
-
     # Streamlit interface
-    st.title("News Summarizer")
+    st.title("📰 News Tentakel")
+    st.write("Create reading comprehension exercises on current news in seconds with the help of AI.")
+
+    # Define a list of languages you want to support
+    languages = ['English', 'Spanish', 'French', 'German', 'Italian']
+
+    # Create a dropdown menu for language selection
+    selected_language = st.selectbox('Choose your language:', languages)
+
 
     with st.form(key="user_input_form"):
         instructions = st.text_input("Enter topic:")
@@ -209,7 +216,7 @@ def main():
         if submit_button:
             manager.create_assistant(
                 name="News Summarizer",
-                instructions="You are a personal article summarizer Assistant who knows how to take a list of article's titles and descriptions and then write a short summary of all the news articles",
+                instructions= "Summarize the news and create exercises to test understanding",
                 tools=[
                     {
                         "type": "function",
@@ -234,9 +241,9 @@ def main():
 
             # Add the message and run the assistant
             manager.add_message_to_thread(
-                role="user", content=f"summarize the news on this topic {instructions}?"
+                role="user", content=f"summarize the news on this topic: {instructions} and generate reading comprehension exercises. Make sure all the news articles you select and outputs you provide are in {selected_language} language."
             )
-            manager.run_assistant(instructions="Summarize the news")
+            manager.run_assistant(instructions="Summarize the news and create reading comprehension exercises. Make sure to keep a coherent output structure.")
 
             # Wait for completions and process messages
             manager.wait_for_completion()
