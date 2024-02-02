@@ -16,10 +16,10 @@ load_dotenv()
 #   api_key=os.environ.get("CUSTOM_ENV_NAME"),
 # )
 
-openai_api_key = st.secrets["OPENAI_API_KEY"]
-news_api_key = st.secrets["NEWS_API_KEY"]
+openai_api_key = os.environ.get("OPENAI_API_KEY")
+news_api_key = os.environ.get("NEWS_API_KEY")
 
-client = openai.OpenAI(api_key=openai_api_key)
+client = openai.OpenAI()
 model = "gpt-3.5-turbo-16k"
 
 
@@ -205,10 +205,12 @@ def main():
 
     # Define a list of languages you want to support
     languages = ['English', 'Spanish', 'French', 'German', 'Italian']
-
     # Create a dropdown menu for language selection
     selected_language = st.selectbox('Choose your language:', languages)
 
+    school_years = ['Year 1', 'Year 2', 'Year 3', 'Year 4', 'Year 5', 'Year 6', 'Year 7', 'Year 8', 'Year 9']
+    # Create a dropdown menu for school year selection
+    selected_year = st.selectbox('Select the school year:', school_years)
 
     with st.form(key="user_input_form"):
         instructions = st.text_input("Enter any topic and receive a list of news articles about it as well as reading comprehension exercises:")
@@ -242,9 +244,9 @@ def main():
 
             # Add the message and run the assistant
             manager.add_message_to_thread(
-                role="user", content=f"summarize the news on this topic: {instructions} and generate reading comprehension exercises. Make sure all the news articles you select and outputs you provide are in {selected_language} language."
+                role="user", content=f"summarize the news on this topic: {instructions} and generate reading comprehension exercises aimed at school students currently in school {selected_year}. Make sure all the news articles you select and outputs you provide are in {selected_language} language."
             )
-            manager.run_assistant(instructions="Summarize the news and create reading comprehension exercises. Make sure to keep a coherent output structure.")
+            manager.run_assistant(instructions="Summarize the news and create reading comprehension exercises. Make sure to keep a coherent output structure, in which you clearly distinguish between each news article and the exercise part. Make sure you include at least 3 exercises in every output. The difficulty and language should be tailored to the user-specific input (school year, language).")
 
             # Wait for completions and process messages
             manager.wait_for_completion()
