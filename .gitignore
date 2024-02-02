@@ -1,3 +1,4 @@
 .env
 myenv/
 pyvenv.cfg
+secrets.toml

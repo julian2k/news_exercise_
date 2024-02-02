@@ -16,9 +16,10 @@ load_dotenv()
 #   api_key=os.environ.get("CUSTOM_ENV_NAME"),
 # )
 
-news_api_key = os.environ.get("NEWS_API_KEY")
+openai_api_key = st.secrets["OPENAI_API_KEY"]
+news_api_key = st.secrets["NEWS_API_KEY"]
 
-client = openai.OpenAI()
+client = openai.OpenAI(api_key=openai_api_key)
 model = "gpt-3.5-turbo-16k"
 
 
@@ -210,7 +211,7 @@ def main():
 
 
     with st.form(key="user_input_form"):
-        instructions = st.text_input("Enter topic:")
+        instructions = st.text_input("Enter any topic and receive a list of news articles about it as well as reading comprehension exercises:")
         submit_button = st.form_submit_button(label="Run Assistant")
 
         if submit_button:
