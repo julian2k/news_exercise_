@@ -246,10 +246,11 @@ def main():
             manager.add_message_to_thread(
                 role="user", content=f"summarize the news on this topic: {instructions} and generate reading comprehension exercises aimed at school students currently in school {selected_year}. Make sure all the news articles you select and outputs you provide are in {selected_language} language."
             )
-            manager.run_assistant(instructions="Summarize the news and create reading comprehension exercises. Make sure to keep a coherent output structure, in which you clearly distinguish between each news article and the exercise part. Make sure you include at least 3 exercises in every output. The difficulty and language should be tailored to the user-specific input (school year, language).")
+            with st.spinner("Wait... Generating response..."):
+                manager.run_assistant(instructions="Summarize the news and create reading comprehension exercises. Make sure to keep a coherent output structure, in which you clearly distinguish between each news article and the exercise part. Make sure you include at least 3 exercises in every output. The difficulty and language should be tailored to the user-specific input (school year, language).")
 
-            # Wait for completions and process messages
-            manager.wait_for_completion()
+                # Wait for completions and process messages
+                manager.wait_for_completion()
 
             summary = manager.get_summary()
 
